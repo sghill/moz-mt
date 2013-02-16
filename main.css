@@ -33,7 +33,7 @@
 }
 
 #pile {
-position:absolute;
+  position:absolute;
   height:50px;
   width:50px;
   border:1px solid gray;
