@@ -12,7 +12,8 @@ var startButton = document.getElementById('start');
 var score = document.getElementById('score');
 
 var total = 0;
-
+var gameLength = 5;
+var turn = 0;
 var game = [];
 
 startButton.addEventListener('click', function() {
@@ -20,7 +21,7 @@ startButton.addEventListener('click', function() {
   total = 0;
   var options = ["red", "blue", "green", "yellow"];
   game = []
-  for(var i = 0; i < 5; i++) {
+  for(var i = 0; i < gameLength; i++) {
     game.push(options[Math.floor(Math.random() * 4)])
   }
   var counter = 0;
@@ -29,7 +30,7 @@ startButton.addEventListener('click', function() {
     counter++;
     if(counter > game.length) {
       clearInterval(interval);
-      pile.innerHTML = "";
+      pile.innerHTML = "turn 0";
       startButton.disabled = false;
     }
   }, 750);
@@ -50,31 +51,35 @@ pile.addEventListener('touchend', function() {
     top: parseInt(pile.style.top)
   };
   
-  var nextColor = game.pop();
+  var nextColor = game[0];
   if(pilePosition.left < 75 && pilePosition.top < 75) {
-    // green
-    if(nextColor === "green") { total++; }
-    else { total--; }
+    answer(nextColor === "green");
   } else if (pilePosition.left < 75 && pilePosition.bottom > (window.innerHeight - 75)){
-    // blue
-    if(nextColor === "blue") { total++; }
-    else { total--; }
+    answer(nextColor === "blue");
   } else if(pilePosition.right > (window.innerWidth - 75) && pilePosition.top < 75) { 
-    // red
-    if(nextColor === "red") { total++; }
-    else { total--; }
+    answer(nextColor === "red")
   } else if(pilePosition.right > (window.innerWidth - 75) && pilePosition.bottom > (window.innerHeight - 75)) {
-    // yellow
-    if(nextColor === "yellow") { total++; }
-    else { total--; }
+    answer(nextColor === "yellow")
   } else {
-    score.innerHTML = "missed!";
+    return;
   }
   score.innerHTML = total;
-  pile.style.left = toPixels((window.screen.width - pile.style.width) / 2);
-  pile.style.top = toPixels((window.screen.height - pile.style.height) / 2);
+  pile.innerHTML = "turn " + ++turn;
+  pile.style.left = toPixels((window.screen.width / 2) - 25);
+  pile.style.top = toPixels((window.screen.height / 2) - 50);
+  if(game.length === 0) {
+    score.innerHTML = "game over! score: " + total;
+  }
 }, false);
 
+function answer(correct) {
+  if(correct) {
+    total++;
+    game.shift();
+  } else {
+    total--;
+  }
+}
 
 function toPixels(x) {
   return [x,"px"].join("");
