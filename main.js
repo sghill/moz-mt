@@ -11,10 +11,13 @@ var targets = {
 var startButton = document.getElementById('start');
 var score = document.getElementById('score');
 
+var total = 0;
+
 var game = [];
 
 startButton.addEventListener('click', function() {
   startButton.disabled = true;
+  total = 0;
   var options = ["red", "blue", "green", "yellow"];
   game = []
   for(var i = 0; i < 5; i++) {
@@ -46,19 +49,28 @@ pile.addEventListener('touchend', function() {
     bottom: parseInt(pile.style.top) + 50,
     top: parseInt(pile.style.top)
   };
-
+  
+  var nextColor = game.pop();
   if(pilePosition.left < 75 && pilePosition.top < 75) {
-    score.innerHTML = "hit green";
+    // green
+    if(nextColor === "green") { total++; }
+    else { total--; }
   } else if (pilePosition.left < 75 && pilePosition.bottom > (window.innerHeight - 75)){
-    score.innerHTML = "hit blue";
+    // blue
+    if(nextColor === "blue") { total++; }
+    else { total--; }
   } else if(pilePosition.right > (window.innerWidth - 75) && pilePosition.top < 75) { 
-    score.innerHTML = "hit red";
+    // red
+    if(nextColor === "red") { total++; }
+    else { total--; }
   } else if(pilePosition.right > (window.innerWidth - 75) && pilePosition.bottom > (window.innerHeight - 75)) {
-    score.innerHTML = "hit yellow";
+    // yellow
+    if(nextColor === "yellow") { total++; }
+    else { total--; }
   } else {
     score.innerHTML = "missed!";
   }
-
+  score.innerHTML = total;
   pile.style.left = toPixels((window.screen.width - pile.style.width) / 2);
   pile.style.top = toPixels((window.screen.height - pile.style.height) / 2);
 }, false);
