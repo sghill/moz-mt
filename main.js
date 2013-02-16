@@ -3,19 +3,14 @@ var ctx = canvas.getContext('2d');
 
 document.body.addEventListener('touchmove', function(e) { e.preventDefault(); }, false);
 
-canvas.addEventListener('touchstart', function(e) {
-  for(var i = 0, j = e.touches.length; i < j; i++) {
-    var touch = e.touches[i];
-    var px = touch.pageX;
-    var py = touch.pageY;
-    
+canvas.addEventListener('touchstart', function (event) {
+  for (var i = 0; i < event.touches.length; i ++) {
+    var touch = event.touches[i];
     ctx.beginPath();
-    ctx.arc(px, py, 30, 0, 2 * Math.PI, true);
-    
-    ctx.fillStyle = '#65a8e4';
+    ctx.fillStyle = '#333';
+    ctx.arc(touch.pageX, touch.pageY, 20, 0, 2*Math.PI, true);
     ctx.fill();
-    ctx.lineWidth = 5.0;
-    ctx.strokeStyle = '#367dbc';
+    ctx.strokeStyle = '#000';
     ctx.stroke();
   }
 }, false);
@@ -40,3 +35,10 @@ canvas.addEventListener('touchmove', function(e) {
 canvas.addEventListener('touchend', function() {
   ctx.clearRect(0, 0, 320, 450);
 }, false);
+
+/*
+var rotation = 0.0, scale = 1.0;
+document.addEventListener('gesturechange', function(e) {
+  
+});
+*/
