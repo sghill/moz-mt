@@ -8,7 +8,29 @@ var targets = {
   red: document.getElementById('red')
 };
 
+var startButton = document.getElementById('start');
 var score = document.getElementById('score');
+
+var game = [];
+
+startButton.addEventListener('click', function() {
+  startButton.disabled = true;
+  var options = ["red", "blue", "green", "yellow"];
+  game = []
+  for(var i = 0; i < 5; i++) {
+    game.push(options[Math.floor(Math.random() * 4)])
+  }
+  var counter = 0;
+  var interval = setInterval(function() {
+    pile.innerHTML = counter + ": " + game[counter];
+    counter++;
+    if(counter > game.length) {
+      clearInterval(interval);
+      pile.innerHTML = "";
+      startButton.disabled = false;
+    }
+  }, 750);
+});
 
 pile.addEventListener('touchmove', function(e) {
   _.each(e.touches, function(touch) {
