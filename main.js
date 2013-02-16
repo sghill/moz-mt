@@ -1,44 +1,15 @@
-var canvas = document.getElementById('canvas');
-var ctx = canvas.getContext('2d');
-
 document.body.addEventListener('touchmove', function(e) { e.preventDefault(); }, false);
 
-canvas.addEventListener('touchstart', function (event) {
-  for (var i = 0; i < event.touches.length; i ++) {
-    var touch = event.touches[i];
-    ctx.beginPath();
-    ctx.fillStyle = '#333';
-    ctx.arc(touch.pageX, touch.pageY, 20, 0, 2*Math.PI, true);
-    ctx.fill();
-    ctx.strokeStyle = '#000';
-    ctx.stroke();
-  }
+var pile = document.getElementById('pile');
+
+pile.addEventListener('touchmove', function(e) {
+  _.each(e.touches, function(touch) {
+    pile.style.left = touch.pageX + "px";
+    pile.style.top = touch.pageY + "px";
+  });
 }, false);
 
-canvas.addEventListener('touchmove', function(e) {
-  for(var i = 0, j = e.touches.length; i < j; i++) {
-    var touch = e.touches[i];
-    var px = touch.pageX;
-    var py = touch.pageY;
-    
-    ctx.beginPath();
-    ctx.arc(px, py, 20, 0, 2 * Math.PI, true);
-    
-    ctx.fillStyle = '#b9c7d3';
-    ctx.fill();
-    ctx.lineWidth = 2.0;
-    ctx.strokeStyle = '#899aaa';
-    ctx.stroke();
-  }
+pile.addEventListener('touchend', function() {
+  pile.style.left = ((window.innerWidth - pile.style.width) / 2) + "px";
+  pile.style.top = ((window.innerHeight - pile.style.height) / 2) + "px";
 }, false);
-
-canvas.addEventListener('touchend', function() {
-  ctx.clearRect(0, 0, 320, 450);
-}, false);
-
-/*
-var rotation = 0.0, scale = 1.0;
-document.addEventListener('gesturechange', function(e) {
-  
-});
-*/
